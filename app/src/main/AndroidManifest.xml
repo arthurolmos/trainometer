@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.arthurwosniaki.trainometer">
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".application.MainApplication"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".AddTrainingActivity"
+            android:exported="true"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".ExecuteTrainingActivity"
+            android:exported="true"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".ExecuteExerciseActivity"
+            android:exported="true"
+            android:parentActivityName=".ExecuteTrainingActivity" />
+
+        <activity android:name=".HistoryTrainingActivity" />
+        <activity android:name=".HistoryExerciseActivity" />
+        <activity android:name=".HistorySerieActivity" />
+
+
+        <service
+            android:name=".stopwatch.services.TimerService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".stopwatch.services.ChronometerService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".stopwatch.services.TimerService$TimerServiceReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="TIMER_START" />
+                <action android:name="TIMER_PAUSE" />
+                <action android:name="TIMER_STOP" />
+                <action android:name="TIMER_RESTART" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".stopwatch.services.ChronometerService$ChronometerServiceReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="CHRONOMETER_START" />
+                <action android:name="CHRONOMETER_PAUSE" />
+                <action android:name="CHRONOMETER_STOP" />
+                <action android:name="CHRONOMETER_RESTART" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
