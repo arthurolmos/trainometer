@@ -4,7 +4,6 @@
     <string name="start_training">Iniciar Treino</string>
     <string name="stats_training">Estatísticas</string>
     <string name="insert_error">Erro ao inserir registro</string>
-    <string name="insert_success">%s inserido com sucesso</string>
     <string name="name_training">Nome do Treino</string>
     <string name="date_start">Data de Início</string>
     <string name="period_training">Período do Treino (meses)</string>
@@ -53,12 +52,24 @@
     <string name="training_same_name_open">Treino com mesmo nome em aberto já cadastrado!</string>
     <string name="error_fill_field">Preencha o campo corretamente!</string>
     <string name="finish">Finalizar</string>
-    <string name="report_error">Erro/ Sugestão...</string>
+    <string name="report_error">Reportar Bug/ Sugestão</string>
     <string name="save">Salvar</string>
     <string name="discard">Descartar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="update">Atualizar</string>
+    <string name="name">Nome</string>
+    <string name="copy">Copiar</string>
+    <string name="copy_training">Copiar Treino</string>
+    <string name="edit_training">Editar Treino</string>
+
+    <string name="insert_success">%s inserido com sucesso</string>
+    <string name="update_success">%s atualizado com sucesso!</string>
+    <string name="delete_success">%s excluído com sucesso!</string>
+
+    <string name="discard_execution">Deseja descartar a execução atual? Se descartada, ela será perdida!</string>
+    <string name="finish_execution">Deseja finalizar a execução atual? Se finalizada, ela não poderá ser reaberta!</string>
+    <string name="restore_training">Restaurar Treino</string>
 
 
 </resources>

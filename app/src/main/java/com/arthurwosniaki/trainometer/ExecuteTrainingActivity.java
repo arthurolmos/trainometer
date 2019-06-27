@@ -18,18 +18,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arthurwosniaki.trainometer.adapters.ExecuteTrainingAdapter;
+import com.arthurwosniaki.trainometer.database.DatabaseCallback;
 import com.arthurwosniaki.trainometer.database.viewmodels.ExecutionViewModel;
 import com.arthurwosniaki.trainometer.database.viewmodels.ExecutionWithTrainingViewModel;
 import com.arthurwosniaki.trainometer.database.viewmodels.ExerciseWithSeriesViewModel;
 import com.arthurwosniaki.trainometer.entities.Execution;
 import com.arthurwosniaki.trainometer.entities.Training;
-import com.arthurwosniaki.trainometer.database.DatabaseCallback;
 import com.arthurwosniaki.trainometer.utils.AlertDialogUtil;
 import com.arthurwosniaki.trainometer.utils.Converters;
 import com.arthurwosniaki.trainometer.utils.SendErrorReport;
 import com.arthurwosniaki.trainometer.utils.ToastMessage;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,69 +65,61 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
         requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
 
         setupRecyclerView();
-        initialize();
+
+        long idTraining = getIntent().getLongExtra("id_training", -1);
+        if(idTraining != -1){
+            initializeData(idTraining);
+        }
     }
 
 
-    private void initialize() {
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Log.d(TAG, "Getting extras...");
+    private void initializeData(long idTraining) {
+        //Execution Observer
+        ExecutionWithTrainingViewModel executionWithTraining = ViewModelProviders.of(this)
+                .get(ExecutionWithTrainingViewModel.class);
+        executionWithTraining.getOpenExecutionWithTraining(idTraining, true).observe(this, e->{
+            if(e != null){
+                Log.d(TAG, "Open Execution found! ID: " + e.getExecution().getId());
+                Log.d(TAG, "Updating UI...");
 
-            long idTraining = extras.getLong("id_training");
+                if(e.getTraining().size() > 0) {
+                    Training t = e.getTraining().get(0);
+                    Log.d(TAG, "Training ID: " + t.getId());
 
-            //Execution Observer
-            ExecutionWithTrainingViewModel executionWithTraining = ViewModelProviders.of(this)
-                    .get(ExecutionWithTrainingViewModel.class);
-            executionWithTraining.getOpenExecutionWithTraining(idTraining, true).observe(this, e->{
-                if(e != null){
-                    Log.d(TAG, "Open Execution found! ID: " + e.getExecution().getId());
-                    Log.d(TAG, "Updating UI...");
+                    tvNameTraining.setText(t.getName());
 
-                    if(e.getTraining().size() > 0) {
-                        Training t = e.getTraining().get(0);
-                        Log.d(TAG, "Training ID: " + t.getId());
+                    String dateStart = Converters.localDateToString(e.getExecution().getDateStart());
+                    tvDateInit.setText(dateStart);
 
-                        tvNameTraining.setText(t.getName());
-
-                        String dateStart = Converters.localDateToString(e.getExecution().getDateStart());
-                        tvDateInit.setText(dateStart);
-
-                        execution = e.getExecution();
-                        mAdapter.setIdExecution(execution.getId());
-                    }
-                }else{
-                    Log.d(TAG, "Training not found!");
-
-                    showMessageDialog("Erro!", "Treino não encontrado!");
+                    execution = e.getExecution();
+                    mAdapter.setIdExecution(execution.getId());
                 }
-            });
+            }else{
+                Log.d(TAG, "Training not found!");
+            }
+        });
 
 
-            //Exercise Observer
-            ExerciseWithSeriesViewModel exerciseWithSeriesViewModel =
-                    ViewModelProviders.of(this).get(ExerciseWithSeriesViewModel.class);
-            exerciseWithSeriesViewModel.getExerciseAndSeriesByIdTraining(idTraining).observe(this, e -> {
-                if(e != null) {
-                    Log.d(TAG, "Exercises found!");
+        //Exercise Observer
+        ExerciseWithSeriesViewModel exerciseWithSeriesViewModel =
+                ViewModelProviders.of(this).get(ExerciseWithSeriesViewModel.class);
+        exerciseWithSeriesViewModel.getExerciseAndSeriesByIdTraining(idTraining).observe(this, e -> {
+            if(e != null) {
+                Log.d(TAG, "Exercises found!");
 
-                    if (e.size() > 0) {
-                        Log.d(TAG, "Updating Exercises adapter...");
-                        mAdapter.setExercises(e);
+                if (e.size() > 0) {
+                    Log.d(TAG, "Updating Exercises adapter...");
+                    Collections.sort(e);
+                    mAdapter.setExercisesWithSeries(e);
 
-                    } else {
-                        Log.d(TAG, "Exercises not found!");
-                        ToastMessage.showMessage(this, "Sem exercícios cadastrados!");
-                    }
                 } else {
                     Log.d(TAG, "Exercises not found!");
+                    ToastMessage.showMessage(this, "Sem exercícios cadastrados!");
                 }
-            });
-
-        } else {
-            Log.d(TAG, "Extras null.");
-            showMessageDialog("Erro!", "Erro ao abrir o Treino!");
-        }
+            } else {
+                Log.d(TAG, "Exercises not found!");
+            }
+        });
     }
 
     private void setupRecyclerView() {
@@ -144,16 +137,15 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
 
     private void finishExecution() {
         AlertDialog.Builder dialog = new AlertDialogUtil(this)
-                .createAlertDialog("Atenção!",
-                        "Deseja finalizar a execução atual? Se finalizada, ela não poderá ser reaberta!");
+                .createAlertDialog("Atenção!",getString(R.string.finish_execution)
+                        );
         dialog.setPositiveButton("OK",(dialogInterface, i) -> {
             LocalDate now = LocalDate.now();
             execution.setDateEnd(now);
             execution.setOpen(false);
 
-            finish();
             new ExecutionViewModel(getApplication(), this).update(execution);
-            ToastMessage.showMessage(this, "Execução concluída com sucesso!");
+            finish();
 
         }).setNegativeButton("Cancelar", (dialogInterface, i) ->{
 
@@ -164,12 +156,11 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
     private void discardExecution() {
         AlertDialog.Builder dialog = new AlertDialogUtil(this)
                 .createAlertDialog("Atenção!",
-                        "Deseja descartar a execução atual? Se descartada, ela será perdida!");
+                        getString(R.string.discard_execution));
         dialog.setPositiveButton("OK",(dialogInterface, i) -> {
 
-            finish();
             new ExecutionViewModel(getApplication(), this).delete(execution);
-            ToastMessage.showMessage(this, "Execução excluída com sucesso!");
+            finish();
 
         }).setNegativeButton("Cancelar", (dialogInterface, i) ->{
 
@@ -180,7 +171,9 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
     private void showMessageDialog(String title, String message){
         AlertDialog.Builder dialog = new AlertDialogUtil(this)
                 .createAlertDialog(title, message);
-        dialog.setPositiveButton("OK", (dialogInterface, i) -> finish());
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+            finish();
+        });
         dialog.show();
     }
 
@@ -244,12 +237,13 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
 
     //CALLBACKS
     @Override
-    public void onItemDeleted() {
+    public void onItemDeleted(String s) {
         Log.d(TAG, "Item deleted!");
+        ToastMessage.showMessage(this, getString(R.string.delete_success, s));
     }
 
     @Override
-    public void onItemAdded() {
+    public void onItemAdded(String s) {
         Log.d(TAG, "Item added!");
     }
 
@@ -259,7 +253,8 @@ public class ExecuteTrainingActivity extends AppCompatActivity implements Databa
     }
 
     @Override
-    public void onItemUpdated() {
+    public void onItemUpdated(String s) {
         Log.d(TAG, "Item updated!");
+        ToastMessage.showMessage(this, getString(R.string.update_success, s));
     }
 }

@@ -146,7 +146,7 @@ public class ChronometerService extends Service {
 
     //=== FRAGMENT UPDATE ===/
     private void updateChronometer(Long t){
-        String s = Converters.longToString(time);
+        String s = Converters.longTimeToString(time);
 
         Intent localIntent = new Intent(CHRONOMETER_FRAGMENT_BROADCAST)
                 .setAction(CHRONOMETER_UPDATE)

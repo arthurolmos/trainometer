@@ -9,7 +9,7 @@ import com.arthurwosniaki.trainometer.entities.Serie;
 
 import java.util.List;
 
-public class ExerciseWithSeries {
+public class ExerciseWithSeries implements Comparable<ExerciseWithSeries>{
     @Embedded
     private Exercise exercise;
 
@@ -47,5 +47,10 @@ public class ExerciseWithSeries {
 
     public void setExecutionId(long executionId) {
         this.executionId = executionId;
+    }
+
+    @Override
+    public int compareTo(ExerciseWithSeries otherExerciseWithSeries) {
+        return (this.getExercise().getSequence() - otherExerciseWithSeries.getExercise().getSequence());
     }
 }

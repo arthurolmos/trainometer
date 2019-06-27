@@ -51,6 +51,16 @@ public class Training {
         this.open = open;
     }
 
+    @Ignore
+    public Training(String name, LocalDate dateStart, Long period, LocalDate dateConclusion, boolean open, long id) {
+        this.name = name;
+        this.dateStart = dateStart;
+        this.period = period;
+        this.dateConclusion = dateConclusion;
+        this.open = open;
+        this.id = id;
+    }
+
     /* ======================== GETTERS & SETTERS ========================== */
 
     public long getId() {

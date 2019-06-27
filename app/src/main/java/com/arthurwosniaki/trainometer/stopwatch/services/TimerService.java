@@ -157,7 +157,7 @@ public class TimerService extends Service {
 
     //=== FRAGMENT ===/
     private void updateTimer(Long t){
-        String s = Converters.longToString(time);
+        String s = Converters.longTimeToString(time);
 
         Intent localIntent = new Intent(TIMER_FRAGMENT_BROADCAST)
                 .setAction(TIMER_UPDATE)
@@ -172,92 +172,6 @@ public class TimerService extends Service {
 
         LocalBroadcastManager.getInstance(TimerService.this).sendBroadcast(localIntent);
     }
-
-
-//    private void createTimerRunningNotification(){
-//        Intent intent = new Intent(this, ExecuteExerciseActivity.class);
-//        putIntentExtras(intent, true);
-//
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addNextIntentWithParentStack(intent);
-//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(TIMER_ID_SERVICE, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        //Action Buttons & Intents
-//        //START & PAUSE ACTION
-//        String text;
-//        Intent actionIntent = new Intent(this, TimerServiceReceiver.class);
-//        if(isTimerPaused){
-//            actionIntent.setAction(TIMER_START);
-//            text = getString(R.string.start);
-//
-//        }else{
-//            actionIntent.setAction(TIMER_PAUSE);
-//            text = getString(R.string.pause_timer);
-//        }
-//        putIntentExtras(actionIntent, true);
-//        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(this, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        //STOP ACTION
-//        Intent stopIntent = new Intent(this, TimerServiceReceiver.class);
-//        stopIntent.setAction(TIMER_STOP);
-//        putIntentExtras(stopIntent, true);
-//        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//
-//        //Create Notification
-//        mBuilder = new NotificationCompat.Builder(this, CHANNEL_DEFAULT_TIMER_ID)
-//                .setContentTitle(getResources().getString(R.string.timer))
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setSmallIcon(R.drawable.ic_timer_white_24dp)
-//                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-//                .setOnlyAlertOnce(true)
-//
-//                .setContentIntent(pendingIntent)
-//                .setAutoCancel(false)
-//                .addAction(R.drawable.btn_notification_action, text, actionPendingIntent)
-//                .addAction(R.drawable.btn_notification_action, getString(R.string.stop), stopPendingIntent);
-//
-//        notification = mBuilder.setOngoing(true).build();
-//
-//        startForeground(TIMER_ID_SERVICE, notification);
-//    }
-//
-//    private void createTimerAlarmNotification(){
-//        Intent intent = new Intent(this, ExecuteExerciseActivity.class);
-//        putIntentExtras(intent, true);
-//
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addNextIntentWithParentStack(intent);
-//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(TIMER_ID_SERVICE, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        //Action Buttons & Intents
-//        Intent restartIntent = new Intent(this, TimerServiceReceiver.class);
-//        restartIntent.setAction(TIMER_RESTART);
-//        putIntentExtras(restartIntent, true);
-//        PendingIntent restartPendingIntent = PendingIntent.getBroadcast(this, 0, restartIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Intent stopIntent = new Intent(this, TimerServiceReceiver.class);
-//        stopIntent.setAction(TIMER_STOP);
-//        putIntentExtras(stopIntent, true);
-//        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//
-//        mBuilder = new NotificationCompat.Builder(this, CHANNEL_HIGH_TIMER_ID)
-//                .setContentTitle(getResources().getString(R.string.timer))
-//                .setContentText(getResources().getString(R.string.timer_default_time))
-//                .setPriority(NotificationCompat.PRIORITY_MAX)
-//                .setSmallIcon(R.drawable.ic_timer_off_white_24dp)
-//                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-//
-//                .setContentIntent(pendingIntent)
-//                .setAutoCancel(false)
-//                .addAction(R.drawable.btn_notification_action, getString(R.string.restart), restartPendingIntent)
-//                .addAction(R.drawable.btn_notification_action, getString(R.string.stop), stopPendingIntent);
-//
-//        notification = mBuilder.setOngoing(true).build();
-//
-//        startForeground(TIMER_ID_SERVICE, notification);
-//    }
 
 
     private void createTimerNotification(boolean running){

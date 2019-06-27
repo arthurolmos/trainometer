@@ -78,16 +78,18 @@ public class Converters {
         return date;
     }
 
-
-
     public static String longToString(Long l){
+        return Long.toString(l);
+    }
+
+    public static String longTimeToString(Long l){
         DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
         formatter.setTimeZone(TimeZone.getTimeZone("UTC-3"));
 
         return formatter.format(new Time(l));
     }
 
-    public static long stringToLong(String s){
+    public static long stringTimeToLong(String s){
         try {
             DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
             formatter.setTimeZone(TimeZone.getTimeZone("UTC-3"));

@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EditTrainingListAdapter extends RecyclerView.Adapter<EditTrainingListAdapter.ViewHolder>{
-    private String TAG = EditTrainingListAdapter.class.getSimpleName();
+public class CopyTrainingListAdapter extends RecyclerView.Adapter<CopyTrainingListAdapter.ViewHolder>{
+    private String TAG = CopyTrainingListAdapter.class.getSimpleName();
 
     private long mLastClickTime = 0;
 
@@ -40,7 +40,7 @@ public class EditTrainingListAdapter extends RecyclerView.Adapter<EditTrainingLi
     private Context context;
     private DatabaseCallback callback;
 
-    public EditTrainingListAdapter(Activity activity, RecyclerView rvEditExercises, DatabaseCallback callback) {
+    public CopyTrainingListAdapter(Activity activity, RecyclerView rvEditExercises, DatabaseCallback callback) {
         this.activity = activity;
         this.context = activity.getApplicationContext();
         this.callback = callback;
@@ -59,7 +59,7 @@ public class EditTrainingListAdapter extends RecyclerView.Adapter<EditTrainingLi
         // Create a new View
         LayoutInflater inflater = LayoutInflater.from(
                 parent.getContext());
-        View v = inflater.inflate(R.layout.list_edit_training, parent, false);
+        View v = inflater.inflate(R.layout.list_copy_training, parent, false);
 
         v.setOnClickListener(view -> {
             //Mis-clicking prevention, using threshold of 1000 ms
@@ -222,7 +222,7 @@ public class EditTrainingListAdapter extends RecyclerView.Adapter<EditTrainingLi
     public void onItemSwiped(final int position) {
         final Exercise e = exercises.get(position);
 
-        Snackbar.make(activity.findViewById(R.id.editTrainingLayout),
+        Snackbar.make(activity.findViewById(R.id.copyTrainingLayout),
                 activity.getString(R.string.delete_item, e.getName()), 2000)
                 .setAction("Excluir", view -> {
                     Log.d(TAG, "Removed position: " + position);

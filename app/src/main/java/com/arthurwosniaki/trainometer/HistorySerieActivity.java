@@ -13,11 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.arthurwosniaki.trainometer.adapters.HistorySerieAdapter;
+import com.arthurwosniaki.trainometer.database.DatabaseCallback;
 import com.arthurwosniaki.trainometer.database.viewmodels.ExerciseHistoryViewModel;
 import com.arthurwosniaki.trainometer.entities.Execution;
 import com.arthurwosniaki.trainometer.entities.Serie;
 import com.arthurwosniaki.trainometer.entities.pojos.ExerciseHistory;
-import com.arthurwosniaki.trainometer.database.DatabaseCallback;
 import com.arthurwosniaki.trainometer.utils.Converters;
 import com.arthurwosniaki.trainometer.utils.SendErrorReport;
 
@@ -49,30 +49,23 @@ public class HistorySerieActivity extends AppCompatActivity  implements Database
 
         ButterKnife.bind(this);
 
-        initialize();
-    }
-
-    private void initialize(){
-        Bundle extras = getIntent().getExtras();
         setupRecyclerView();
 
-        if(extras != null) {
-            //Getting Extras
-            long idExercise = extras.getLong("id_exercise");
-
-            ExerciseHistoryViewModel exerciseHistoryViewModel =
-                    ViewModelProviders.of(this).get(ExerciseHistoryViewModel.class);
-            exerciseHistoryViewModel.getExerciseHistoryByIdExercise(idExercise).observe(this, e -> {
-                if (e != null) {
-                    long serieTotal = e.getExercise().getSerieTotal();
-                    mAdapter.setSerieTotal(serieTotal);
-
-                    List<ExerciseHistory> histories = createHistory(e);
-                    mAdapter.setHistories(histories);
-                }
-            });
+        long idExercise = getIntent().getLongExtra("id_exercise", -1);
+        if(idExercise != -1) {
+            initializeData(idExercise);
         }
+    }
 
+    private void initializeData(long idExercise){
+        ExerciseHistoryViewModel exerciseHistoryViewModel =
+                ViewModelProviders.of(this).get(ExerciseHistoryViewModel.class);
+        exerciseHistoryViewModel.getExerciseHistoryByIdExercise(idExercise).observe(this, e -> {
+            if (e != null) {//
+                List<ExerciseHistory> histories = createHistory(e);
+                mAdapter.setHistories(histories);
+            }
+        });
     }
 
     private void setupRecyclerView() {
@@ -102,6 +95,7 @@ public class HistorySerieActivity extends AppCompatActivity  implements Database
                     .collect(Collectors.toList());
 
             if(!seriesExecution.isEmpty()){
+                int serieTotal = 0;
                 for (Serie s : seriesExecution) {
                     h.getReps().add(Integer.toString(s.getReps()));
                     h.getWeight().add(Float.toString(s.getWeight()));
@@ -109,8 +103,11 @@ public class HistorySerieActivity extends AppCompatActivity  implements Database
                     if(!s.getComment().equals("")) {
                         h.getComments().add(s.getComment());
                     }
+
+                    serieTotal++;
                 }
 
+                h.setSerieTotal(serieTotal);
                 h.setExercise(exerciseHistory.getExercise());
                 h.setExecution(e);
 
@@ -156,12 +153,12 @@ public class HistorySerieActivity extends AppCompatActivity  implements Database
 
     //INTERFACE CALLBACKS
     @Override
-    public void onItemDeleted() {
+    public void onItemDeleted(String s) {
         Log.d(TAG, "Item deleted!");
     }
 
     @Override
-    public void onItemAdded() {
+    public void onItemAdded(String s) {
         Log.d(TAG, "Item added!");
     }
 
@@ -171,7 +168,7 @@ public class HistorySerieActivity extends AppCompatActivity  implements Database
     }
 
     @Override
-    public void onItemUpdated() {
+    public void onItemUpdated(String s) {
         Log.d(TAG, "Item updated!");
     }
 }

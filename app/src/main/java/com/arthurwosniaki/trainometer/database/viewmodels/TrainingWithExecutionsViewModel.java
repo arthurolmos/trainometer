@@ -34,8 +34,4 @@ public class TrainingWithExecutionsViewModel extends AndroidViewModel{
     public LiveData<List<TrainingWithExecutions>> getOpenTrainingsWithExecutions(boolean open) {
         return repository.getOpenTrainingsWithExecutions(open);
     }
-
-    public LiveData<TrainingWithExecutions> getTrainingAndExecutionByIdTraining(long idTraining, boolean open){
-        return repository.getTrainingAndExecutionByIdTraining(idTraining, open);
-    }
 }

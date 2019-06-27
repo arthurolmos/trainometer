@@ -19,8 +19,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.arthurwosniaki.trainometer.adapters.AddTrainingListAdapter;
+import com.arthurwosniaki.trainometer.adapters.EditTrainingListAdapter;
 import com.arthurwosniaki.trainometer.database.DatabaseCallback;
+import com.arthurwosniaki.trainometer.database.viewmodels.ExerciseViewModel;
 import com.arthurwosniaki.trainometer.database.viewmodels.TrainingViewModel;
 import com.arthurwosniaki.trainometer.database.viewmodels.TrainingWithExercisesViewModel;
 import com.arthurwosniaki.trainometer.entities.Exercise;
@@ -42,11 +43,16 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 import static java.util.Objects.requireNonNull;
 
-public class AddTrainingActivity extends AppCompatActivity implements DatabaseCallback {
-    private String TAG = AddTrainingActivity.class.getSimpleName();
+public class CopyTrainingActivity extends AppCompatActivity implements DatabaseCallback {
+    private String TAG = CopyTrainingActivity.class.getSimpleName();
 
+    private long idTraining;
+
+    private Training training;
     private List<Training> openTrainings;
-    private AddTrainingListAdapter mAdapter;
+    private List<Exercise> exercises;
+
+    private EditTrainingListAdapter mAdapter;
 
     @BindView(R.id.etNameTraining) EditText etNameTraining;
     @BindView(R.id.etDateStart) EditText etDateStart;
@@ -82,10 +88,8 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
         setupCalendar();
         setupRecyclerView();
 
-        TrainingViewModel trainingViewModel = ViewModelProviders.of(this).get(TrainingViewModel.class);
-        trainingViewModel.getOpenTrainings(true).observe(this,
-                t -> openTrainings = t);
-        trainingViewModel.getOpenTrainings(true).removeObservers(this);
+        idTraining = getIntent().getLongExtra("id_training", 0);
+        initializeData(idTraining);
     }
 
     private void setupCalendar(){
@@ -98,7 +102,7 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvExercises.setLayoutManager(layoutManager);
 
-        mAdapter = new AddTrainingListAdapter(this, new ArrayList<>());
+        mAdapter = new EditTrainingListAdapter(this, rvExercises, this);
         rvExercises.setAdapter(mAdapter);
 
         rvExercises.addItemDecoration(
@@ -141,8 +145,8 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
 
             public void onChildDraw (@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
 
-                new RecyclerViewSwipeDecorator.Builder(AddTrainingActivity.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addBackgroundColor(ContextCompat.getColor(AddTrainingActivity.this, R.color.IndianRed))
+                new RecyclerViewSwipeDecorator.Builder(CopyTrainingActivity.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addBackgroundColor(ContextCompat.getColor(CopyTrainingActivity.this, R.color.IndianRed))
                         .addSwipeRightActionIcon(R.drawable.ic_delete_white_24dp)
                         .create()
                         .decorate();
@@ -153,6 +157,41 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(rvExercises);
     }
+
+    private void initializeData(long idTraining){
+        //Add TrainingWithExercise observer
+        TrainingWithExercisesViewModel trainingWithExercisesViewModel =
+                ViewModelProviders.of(this).get(TrainingWithExercisesViewModel.class);
+        trainingWithExercisesViewModel.getTrainingWithExercises(idTraining).observe(this, t -> {
+            if(t != null){
+                training = t.getTraining();
+
+                String name = training.getName() + " - Cópia";
+                etNameTraining.setText(name);
+
+                String dateStart = Converters.localDateToString(training.getDateStart());
+                etDateStart.setText(dateStart);
+
+                String period = Converters.longToString(training.getPeriod());
+                etPeriodTraining.setText(period);
+
+                if(t.getExercises() != null){
+                    exercises = t.getExercisesOrderedBySequence();
+                    mAdapter.setExercises(exercises);
+                }
+            }
+        });
+
+        //Add Open Trainings observer for validade name when saving
+        TrainingViewModel trainingViewModel =
+                ViewModelProviders.of(this).get(TrainingViewModel.class);
+        trainingViewModel.getOpenTrainings(true).observe(this, t->{
+            if(t != null){
+                openTrainings = t;
+            }
+        });
+    }
+
 
     private void openDatePicker() {
         final Calendar myCalendar = Calendar.getInstance();
@@ -166,7 +205,7 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
             etDateStart.setText(s);
         };
 
-        new DatePickerDialog(AddTrainingActivity.this, date, myCalendar
+        new DatePickerDialog(CopyTrainingActivity.this, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -177,28 +216,23 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
             int serie = Integer.parseInt(etSerie.getText().toString());
             String repetition = etRepetition.getText().toString();
 
-            Exercise exercise = new Exercise(name, serie, repetition);
+            Exercise exercise = new Exercise(name, serie, repetition, idTraining);
+            new ExerciseViewModel(getApplication(), this).insert(exercise);
 
-            mAdapter.add(exercise);
-
-            clearFields();
+            etNameExercise.setText("");
+            etSerie.setText("");
+            etRepetition.setText("");
+            etNameExercise.requestFocus();
         }
     }
 
-    private void clearFields(){
-        etNameExercise.setText("");
-        etSerie.setText("");
-        etRepetition.setText("");
-        etNameExercise.requestFocus();
-    }
-
-    private void save(){
-        Log.d(TAG, "Insert new Training!");
+    private void copy(){
+        Log.d(TAG, "Copying Training!");
         if(validateTraining()) {
 
             String name = etNameTraining.getText().toString();
             if(validTrainingName(name)){
-                Log.d(TAG, "Inserting...");
+                Log.d(TAG, "Copying...");
 
                 String s = etDateStart.getText().toString();
                 LocalDate dateStart = Converters.stringToLocalDate(s);
@@ -206,23 +240,33 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
                 long period = Long.parseLong(etPeriodTraining.getText().toString());
                 LocalDate dateConclusion = dateStart.plusMonths(period);
 
+                //Creates new Training with Exercises
+                TrainingWithExercises trainingWithExercises = new TrainingWithExercises();
+
                 //Creates new Training
                 Training t = new Training(name, dateStart, period, dateConclusion, true);
+                trainingWithExercises.setTraining(t);
 
-                //Get Exercises and set Sequence
+                //Get Exercises and creates a copy to avoid ID dupli
                 List<Exercise> exercises = mAdapter.getExercises();
-                if(exercises != null){
+                if(exercises.size() > 0){
+
+                    //Copies exercises to create new Ids
+                    List<Exercise> newExercises = new ArrayList<>();
                     for(int i=0; i<exercises.size(); i++){
-                        exercises.get(i).setSequence(i+1);
+                        String nameExercise = exercises.get(i).getName();
+                        int serieExercise = exercises.get(i).getSerieTotal();
+                        String repsExercise = exercises.get(i).getRepsTotal();
+                        int sequence = i+1;
+
+                        Exercise e = new Exercise(nameExercise, serieExercise, repsExercise, sequence);
+                        newExercises.add(e);
                     }
+                    trainingWithExercises.setExercises(newExercises);
                 }
 
-                //Creates Training with Exercises and Insert
-                TrainingWithExercises trainingWithExercises = new TrainingWithExercises();
-                trainingWithExercises.setTraining(t);
-                trainingWithExercises.setExercises(exercises);
-
-                new TrainingWithExercisesViewModel(getApplication(), this).insert(trainingWithExercises);
+                new TrainingWithExercisesViewModel(getApplication(), this)
+                        .insert(trainingWithExercises);
 
                 finish();
 
@@ -232,6 +276,7 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
             }
         }
     }
+
 
     private boolean validateExercise(){
         boolean valid = true;
@@ -290,9 +335,11 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
     private boolean validTrainingName(String name){
         boolean resp = true;
 
-        for(Training t : openTrainings){
-            if(t.getName().equals(name)){
-                resp = false;
+        if(openTrainings != null){
+            for(Training t : openTrainings){
+                if(t.getName().equals(name)){
+                    resp = false;
+                }
             }
         }
 
@@ -303,7 +350,7 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_add_training, menu);
+        inflater.inflate(R.menu.menu_copy_training, menu);
         return true;
     }
 
@@ -311,7 +358,7 @@ public class AddTrainingActivity extends AppCompatActivity implements DatabaseCa
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.save: save();
+            case R.id.copy: copy();
                 return true;
 
             case android.R.id.home: onBackPressed();

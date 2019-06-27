@@ -13,12 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
@@ -30,6 +29,17 @@
             android:name=".AddTrainingActivity"
             android:exported="true"
             android:parentActivityName=".MainMenuActivity" />
+
+        <activity
+            android:name=".EditTrainingActivity"
+            android:exported="true"
+            android:parentActivityName=".MainMenuActivity" />
+
+        <activity
+            android:name=".CopyTrainingActivity"
+            android:exported="true"
+            android:parentActivityName=".MainMenuActivity" />
+
         <activity
             android:name=".ExecuteTrainingActivity"
             android:exported="true"

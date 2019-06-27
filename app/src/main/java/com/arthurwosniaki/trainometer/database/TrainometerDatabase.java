@@ -16,13 +16,13 @@ import com.arthurwosniaki.trainometer.database.dao.ExerciseHistoryDao;
 import com.arthurwosniaki.trainometer.database.dao.ExerciseWithSeriesDao;
 import com.arthurwosniaki.trainometer.database.dao.SerieDao;
 import com.arthurwosniaki.trainometer.database.dao.TrainingDao;
-import com.arthurwosniaki.trainometer.database.dao.TrainingFullDao;
 import com.arthurwosniaki.trainometer.database.dao.TrainingWithExecutionsDao;
+import com.arthurwosniaki.trainometer.database.dao.TrainingWithExercisesDao;
 import com.arthurwosniaki.trainometer.entities.Execution;
 import com.arthurwosniaki.trainometer.entities.Exercise;
 import com.arthurwosniaki.trainometer.entities.Serie;
 import com.arthurwosniaki.trainometer.entities.Training;
-import com.arthurwosniaki.trainometer.entities.pojos.TrainingFull;
+import com.arthurwosniaki.trainometer.entities.pojos.TrainingWithExercises;
 import com.arthurwosniaki.trainometer.utils.Converters;
 
 import java.time.LocalDate;
@@ -49,7 +49,8 @@ public abstract class TrainometerDatabase extends RoomDatabase {
     public abstract ExerciseHistoryDao exerciseHistoryDao();
     public abstract TrainingWithExecutionsDao trainingWithExecutionsDao();
     public abstract ExecutionWithTrainingDao executionWithTrainingDao();
-    public abstract TrainingFullDao trainingFullDao();
+    public abstract TrainingWithExercisesDao trainingWithExercises();
+//    public abstract TrainingFullDao trainingFullDao();
 
 
     private static volatile TrainometerDatabase INSTANCE;
@@ -60,7 +61,7 @@ public abstract class TrainometerDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TrainometerDatabase.class, DATABASE_NAME)
-                            .fallbackToDestructiveMigration()
+//                            .fallbackToDestructiveMigration()
 //                            .addCallback(sRoomDatabaseCallback)
 //                            .allowMainThreadQueries()
                             .build();
@@ -83,32 +84,31 @@ public abstract class TrainometerDatabase extends RoomDatabase {
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
-        private final TrainingFullDao mDao;
+        private final TrainingWithExercisesDao mDao;
 
         PopulateDbAsync(TrainometerDatabase db) {
-            mDao = db.trainingFullDao();
+            mDao = db.trainingWithExercises();
         }
 
         @Override
         protected Void doInBackground(final Void... params) {
 
-            mDao.deleteAllTrainingFull();
+            mDao.deleteAllTrainingWithExercises();
 
-            TrainingFull t = new TrainingFull();
-            t = createTrainingA();
-            mDao.insertTrainingFull(t);
+            TrainingWithExercises t = createTrainingA();
+            mDao.insertTrainingWithExercises(t);
 
             t = createTrainingB();
-            mDao.insertTrainingFull(t);
+            mDao.insertTrainingWithExercises(t);
 
             t = createTrainingC();
-            mDao.insertTrainingFull(t);
+            mDao.insertTrainingWithExercises(t);
 
             return null;
         }
     }
 
-    private static TrainingFull createTrainingA(){
+    private static TrainingWithExercises createTrainingA(){
         LocalDate date = LocalDate.now();
         LocalDate conclusion = date.plusMonths(6);
         long period = 6;
@@ -148,14 +148,14 @@ public abstract class TrainometerDatabase extends RoomDatabase {
         e.setSequence(8);
         exercises.add(e);
 
-        TrainingFull t = new TrainingFull();
+        TrainingWithExercises t = new TrainingWithExercises();
         t.setTraining(training);
         t.setExercises(exercises);
 
         return t;
     }
 
-    private static TrainingFull createTrainingB(){
+    private static TrainingWithExercises createTrainingB(){
         LocalDate date = LocalDate.now();
         LocalDate conclusion = date.plusMonths(6);
         long period = 6;
@@ -196,14 +196,14 @@ public abstract class TrainometerDatabase extends RoomDatabase {
         e.setSequence(8);
         exercises.add(e);
 
-        TrainingFull t = new TrainingFull();
+        TrainingWithExercises t = new TrainingWithExercises();
         t.setTraining(training);
         t.setExercises(exercises);
 
         return t;
     }
 
-    private static TrainingFull createTrainingC(){
+    private static TrainingWithExercises createTrainingC(){
         LocalDate date = LocalDate.now();
         LocalDate conclusion = date.plusMonths(6);
         long period = 6;
@@ -244,7 +244,7 @@ public abstract class TrainometerDatabase extends RoomDatabase {
         e.setSequence(8);
         exercises.add(e);
 
-        TrainingFull t = new TrainingFull();
+        TrainingWithExercises t = new TrainingWithExercises();
         t.setTraining(training);
         t.setExercises(exercises);
 

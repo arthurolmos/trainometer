@@ -90,7 +90,7 @@ public class SerieRepository {
             super.onPostExecute(aLong);
 
             if(aLong >= 0)
-                mCallBack.onItemAdded();
+                mCallBack.onItemAdded("Série");
             else
                 mCallBack.onDataNotAvailable();
         }
@@ -116,7 +116,7 @@ public class SerieRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Série");
             else
                 mCallBack.onDataNotAvailable();
 
@@ -143,7 +143,7 @@ public class SerieRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemDeleted();
+                mCallBack.onItemDeleted("Série");
             else
                 mCallBack.onDataNotAvailable();
 

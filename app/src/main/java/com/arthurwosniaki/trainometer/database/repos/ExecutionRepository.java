@@ -89,7 +89,7 @@ public class ExecutionRepository {
             super.onPostExecute(aLong);
 
             if(aLong >= 0)
-                mCallBack.onItemAdded();
+                mCallBack.onItemAdded("Execução");
             else
                 mCallBack.onDataNotAvailable();
         }
@@ -115,7 +115,7 @@ public class ExecutionRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Execução");
             else
                 mCallBack.onDataNotAvailable();
 
@@ -142,7 +142,7 @@ public class ExecutionRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemDeleted();
+                mCallBack.onItemDeleted("Execução");
             else
                 mCallBack.onDataNotAvailable();
         }
@@ -171,7 +171,7 @@ public class ExecutionRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Execução");
             else
                 mCallBack.onDataNotAvailable();
 
@@ -201,7 +201,7 @@ public class ExecutionRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Execução");
             else
                 mCallBack.onDataNotAvailable();
 
@@ -233,7 +233,7 @@ public class ExecutionRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Execução");
             else
                 mCallBack.onDataNotAvailable();
 

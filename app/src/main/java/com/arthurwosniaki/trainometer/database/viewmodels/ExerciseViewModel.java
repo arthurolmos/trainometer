@@ -51,4 +51,8 @@ public class ExerciseViewModel extends AndroidViewModel {
 
         repository.update(exercise);
     }
+
+    public void delete(Exercise exercise){
+        repository.delete(exercise);
+    }
 }

@@ -3,7 +3,6 @@ package com.arthurwosniaki.trainometer.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -13,9 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.arthurwosniaki.trainometer.CopyTrainingActivity;
+import com.arthurwosniaki.trainometer.EditTrainingActivity;
 import com.arthurwosniaki.trainometer.ExecuteTrainingActivity;
 import com.arthurwosniaki.trainometer.R;
 import com.arthurwosniaki.trainometer.database.DatabaseCallback;
@@ -26,7 +27,6 @@ import com.arthurwosniaki.trainometer.entities.Training;
 import com.arthurwosniaki.trainometer.entities.pojos.TrainingWithExecutions;
 import com.arthurwosniaki.trainometer.utils.AlertDialogUtil;
 import com.arthurwosniaki.trainometer.utils.Converters;
-import com.arthurwosniaki.trainometer.utils.ToastMessage;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,11 +52,6 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
         this.rvMainMenu = rvMainMenu;
     }
 
-    public void setTrainings(List<TrainingWithExecutions> t){
-        trainings = t;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
@@ -66,20 +61,14 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
         View v = inflater.inflate(R.layout.list_main_menu, parent, false);
 
 
+        //OnClick of View
         v.setOnClickListener(view -> {
-            //Mis-clicking prevention, using threshold of 1000 ms
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-
-
             final int position = rvMainMenu.getChildAdapterPosition(view);
 
             TrainingWithExecutions t = trainings.get(position);
             if(t.getOpenExecution() != null){
                 Log.d(TAG, "Training with Execution.");
-                openTraining(t);
+                openTraining(t, ExecuteTrainingActivity.class);
 
             } else{
                 AlertDialog.Builder dialog = new AlertDialogUtil(activity)
@@ -90,7 +79,7 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
                     LocalDate date = LocalDate.now();
                     new ExecutionViewModel(activity.getApplication(), callback).insert(new Execution(t.getTraining().getId(), date, true));
 
-                    openTraining(t);
+                    openTraining(t, ExecuteTrainingActivity.class);
 
                 }).setNegativeButton("Cancelar", (d, which)->{
 
@@ -102,12 +91,6 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
         return new ViewHolder(v);
     }
 
-    private void openTraining(TrainingWithExecutions t){
-        Intent intent = new Intent(context, ExecuteTrainingActivity.class);
-        intent.putExtra("id_training", t.getTraining().getId());
-
-        activity.startActivity(intent);
-    }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
@@ -143,16 +126,26 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
 
         //Edit Button
         viewHolder.btnEdit.setOnClickListener(view -> {
-                final int position = viewHolder.getAdapterPosition();
-//
-                //TODO: Edit training
-//                Training t = trainings.get(position);
-//                Intent intent = new Intent(context, EditTrainingActivity.class);
-//                intent.putExtra("id_training", t.getId());
-//
-//                context.startActivity(intent);
-            ToastMessage.showMessage(context, "Ainda não está funfando!");
+            openTraining(t, EditTrainingActivity.class);
         });
+
+        //Copy Button
+        viewHolder.btnCopy.setOnClickListener(view -> {
+            openTraining(t, CopyTrainingActivity.class);
+        });
+    }
+
+    private void openTraining(TrainingWithExecutions t, Class nextActivity){
+        Intent intent = new Intent(context, nextActivity);
+        intent.putExtra("id_training", t.getTraining().getId());
+
+        activity.startActivity(intent);
+    }
+
+
+    public void setTrainings(List<TrainingWithExecutions> t){
+        trainings = t;
+        notifyDataSetChanged();
     }
 
     public void onItemSwipedRight(final int position) {
@@ -215,7 +208,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView txtHeader;
         final TextView txtFooter;
-        final Button btnEdit;
+        final ImageButton btnEdit;
+        final ImageButton btnCopy;
 
 
         ViewHolder(View view) {
@@ -224,6 +218,7 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
             txtFooter = view.findViewById(R.id.tvDescription);
 
             btnEdit = view.findViewById(R.id.btnEdit);
+            btnCopy = view.findViewById(R.id.btnCopy);
         }
     }
 }

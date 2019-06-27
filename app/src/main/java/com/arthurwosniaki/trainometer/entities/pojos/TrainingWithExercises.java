@@ -6,16 +6,17 @@ import android.arch.persistence.room.Relation;
 import com.arthurwosniaki.trainometer.entities.Exercise;
 import com.arthurwosniaki.trainometer.entities.Training;
 
+import java.util.Collections;
 import java.util.List;
 
-public class TrainingFull {
+public class TrainingWithExercises {
     @Embedded
     private Training training;
 
     @Relation(parentColumn = "id", entityColumn = "id_training", entity = Exercise.class)
     private List<Exercise> exercises;
 
-    public TrainingFull() {
+    public TrainingWithExercises() {
     }
 
     public Training getTraining() {
@@ -24,6 +25,12 @@ public class TrainingFull {
 
     public void setTraining(Training training) {
         this.training = training;
+    }
+
+    public List<Exercise> getExercisesOrderedBySequence() {
+        Collections.sort(exercises);
+
+        return exercises;
     }
 
     public List<Exercise> getExercises() {

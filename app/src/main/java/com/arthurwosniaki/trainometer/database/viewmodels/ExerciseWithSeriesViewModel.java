@@ -34,5 +34,4 @@ public class ExerciseWithSeriesViewModel extends AndroidViewModel {
     public LiveData<List<ExerciseWithSeries>> getExerciseAndSeriesByIdTraining(long idTraining){
         return repository.getExerciseAndSeriesByIdTraining(idTraining);
     }
-
 }

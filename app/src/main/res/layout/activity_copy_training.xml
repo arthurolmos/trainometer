@@ -16,7 +16,6 @@
         android:layout_marginBottom="8dp">
 
         <LinearLayout
-            android:id="@+id/editTrainingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -26,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/edit_training"
+                android:capitalize="none"
+                android:text="@string/copy_training"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="18sp"

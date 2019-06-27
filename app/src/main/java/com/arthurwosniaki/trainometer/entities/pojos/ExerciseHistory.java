@@ -36,6 +36,9 @@ public class ExerciseHistory {
     @Ignore
     private List<String> comments;
 
+    @Ignore
+    private int serieTotal;
+
     public ExerciseHistory() {
         reps = new ArrayList<>();
         weight = new ArrayList<>();
@@ -104,5 +107,13 @@ public class ExerciseHistory {
 
     public void setComments(List<String> comments) {
         this.comments = comments;
+    }
+
+    public int getSerieTotal() {
+        return serieTotal;
+    }
+
+    public void setSerieTotal(int serieTotal) {
+        this.serieTotal = serieTotal;
     }
 }

@@ -78,9 +78,9 @@ public class TrainingRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Treino");
             else
-                mCallBack.onItemDeleted();
+                mCallBack.onItemDeleted("Treino");
 
         }
     }
@@ -105,7 +105,7 @@ public class TrainingRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemDeleted();
+                mCallBack.onItemDeleted("Treino");
             else
                 mCallBack.onDataNotAvailable();
         }

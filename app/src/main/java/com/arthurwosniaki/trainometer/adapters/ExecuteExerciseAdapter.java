@@ -45,7 +45,6 @@ public class ExecuteExerciseAdapter extends RecyclerView.Adapter<ExecuteExercise
     private DatabaseCallback callback;
 
 
-
     public ExecuteExerciseAdapter(Activity activity, RecyclerView recyclerView, DatabaseCallback callback) {
         this.activity = activity;
         this.context = activity.getApplicationContext();
@@ -82,8 +81,8 @@ public class ExecuteExerciseAdapter extends RecyclerView.Adapter<ExecuteExercise
         final Serie serie = series.get(i);
 
         String sequence = format(Locale.US, "%02d", i+1) + ":";
-        String weight = context.getResources().getString(R.string.weight) + ": " + Float.toString(serie.getWeight());
-        String reps = context.getResources().getString(R.string.reps) + ": "  + Integer.toString(serie.getReps());
+        String weight = context.getResources().getString(R.string.weight) + ": " + serie.getWeight();
+        String reps = context.getResources().getString(R.string.reps) + ": "  + serie.getReps();
 
         String comment = context.getResources().getString(R.string.comments) + ": " + serie.getComment();
 

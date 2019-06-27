@@ -32,13 +32,4 @@ public class TrainingWithExecutionsRepository {
     public LiveData<List<TrainingWithExecutions>> getOpenTrainingsWithExecutions(boolean open){
         return mDao.getOpenTrainingsWithExecutions(open);
     }
-
-//    public LiveData<List<TrainingWithExecutions>> getOpenTrainingsWithOpenExecution(boolean open){
-//        return mDao.getOpenTrainingsWithOpenExecution(open);
-//    }
-
-    public LiveData<TrainingWithExecutions> getTrainingAndExecutionByIdTraining(long idTraining, boolean open){
-        return mDao.getTrainingAndExecutionByIdTraining(idTraining, open);
-    }
-
 }

@@ -136,12 +136,12 @@ public class HistoryExerciseActivity extends AppCompatActivity implements Databa
 
     //CALLBACKS
     @Override
-    public void onItemDeleted() {
+    public void onItemDeleted(String s) {
         Log.d(TAG, "Item deleted!");
     }
 
     @Override
-    public void onItemAdded() {
+    public void onItemAdded(String s) {
         Log.d(TAG, "Item added!");
     }
 
@@ -151,7 +151,7 @@ public class HistoryExerciseActivity extends AppCompatActivity implements Databa
     }
 
     @Override
-    public void onItemUpdated() {
+    public void onItemUpdated(String s) {
         Log.d(TAG, "Item updated!");
     }
 }

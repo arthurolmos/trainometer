@@ -20,7 +20,7 @@ import java.util.List;
 public class HistorySerieAdapter extends RecyclerView.Adapter<HistorySerieAdapter.ViewHolder>{
     private String TAG = HistorySerieAdapter.class.getSimpleName();
 
-    private long serieTotal;
+//    private long serieTotal;
 
     private List<ExerciseHistory> histories;
     private Activity activity;
@@ -53,6 +53,7 @@ public class HistorySerieAdapter extends RecyclerView.Adapter<HistorySerieAdapte
         viewHolder.tvDate.setText(h.getDate());
 
         //Creating the Weight & Reps section
+        int serieTotal = h.getSerieTotal();
         for(int counter = 0; counter < serieTotal; counter++){
             LinearLayout layout = new LinearLayout(context);
             layout.setOrientation(LinearLayout.VERTICAL);
@@ -135,11 +136,6 @@ public class HistorySerieAdapter extends RecyclerView.Adapter<HistorySerieAdapte
         histories = h;
         notifyDataSetChanged();
     }
-
-    public void setSerieTotal(long s){
-        serieTotal = s;
-    }
-
 
     @Override
     public long getItemId(int position) {

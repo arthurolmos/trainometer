@@ -87,9 +87,10 @@ public class ExecuteTrainingAdapter extends RecyclerView.Adapter<ExecuteTraining
 
     public void setIdExecution(long id){
         idExecution = id;
+        notifyDataSetChanged();
     }
 
-    public void setExercises(List<ExerciseWithSeries> e){
+    public void setExercisesWithSeries(List<ExerciseWithSeries> e){
         exercises = e;
         notifyDataSetChanged();
     }
@@ -113,22 +114,19 @@ public class ExecuteTrainingAdapter extends RecyclerView.Adapter<ExecuteTraining
         String sequence = Integer.toString(exercise.getSequence());
         viewHolder.tvSeqExercise.setText(sequence);
 
-
         viewHolder.tvName.setText(exercise.getName());
-
 
         int serie = exercise.getSerieTotal();
         int count = exercises.get(i).getSeries()
                 .stream().filter(s -> s.getIdExecution() == idExecution).collect(Collectors.toList()).size();
-
         String counter = "Séries: " + count + " : " + serie;
+
         viewHolder.tvSeries.setText(counter);
         if(count == serie){
             viewHolder.tvSeries.setTextColor(ContextCompat.getColor(context, R.color.SeaGreen));
         }else{
             viewHolder.tvSeries.setTextColor(ContextCompat.getColor(context, R.color.IndianRed));
         }
-
 
         String reps = exercise.getRepsTotal();
         String r = "Reps: " + reps;

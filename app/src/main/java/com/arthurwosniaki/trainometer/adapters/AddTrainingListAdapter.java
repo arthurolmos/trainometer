@@ -94,7 +94,6 @@ public class AddTrainingListAdapter extends RecyclerView.Adapter<AddTrainingList
                 .setAction("Excluir", view-> {
                         Log.d(TAG, "Removed position: " + position);
 
-//                        deleteFromDatabase(e);
                         remove(position);
 
                 }).addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {

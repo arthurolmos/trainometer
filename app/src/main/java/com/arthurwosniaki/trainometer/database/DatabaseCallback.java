@@ -2,11 +2,12 @@ package com.arthurwosniaki.trainometer.database;
 
 public interface DatabaseCallback {
 
-    void onItemDeleted();
+    void onItemAdded(String s);
 
-    void onItemAdded();
+    void onItemUpdated(String s);
+
+    void onItemDeleted(String s);
 
     void onDataNotAvailable();
 
-    void onItemUpdated();
 }

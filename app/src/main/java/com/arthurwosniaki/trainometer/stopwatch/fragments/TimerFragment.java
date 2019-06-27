@@ -173,7 +173,7 @@ public class TimerFragment extends Fragment {
                                     + String.format("%02d", secondsPicker);
                             tvTimer.setText(time1);
 
-                            long t = Converters.stringToLong(time1);
+                            long t = Converters.stringTimeToLong(time1);
                             SharedPreferences preferences = requireNonNull(getActivity()).getSharedPreferences(FRAGMENT_PREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putLong("init_time", t);
@@ -199,12 +199,12 @@ public class TimerFragment extends Fragment {
 
         if(isTimerServiceRunning){
             //If timer is running, text will be timeleft
-            text = Converters.longToString(timeLeft);
+            text = Converters.longTimeToString(timeLeft);
             tvTimer.setEnabled(false);
         }else{
             //If timer is not running, then
             if(initTime != 0) {
-                text = Converters.longToString(initTime);
+                text = Converters.longTimeToString(initTime);
             }else {
                 text = getResources().getString(R.string.timer_default_time);
             }

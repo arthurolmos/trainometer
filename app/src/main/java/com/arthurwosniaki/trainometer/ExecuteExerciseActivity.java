@@ -187,7 +187,7 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
 
             setupRecyclerView();
             setupFragment(extras);
-            initialize();
+            initializeData();
         }
     }
 
@@ -281,7 +281,7 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
         viewPager.setCurrentItem(fragmentPosition);
     }
 
-    private void initialize(){
+    private void initializeData(){
         //Exercise Observer
         ExerciseViewModel exerciseViewModel =
                 ViewModelProviders.of(this).get(ExerciseViewModel.class);
@@ -292,6 +292,8 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
 
                 tvExerciseName.setText(e.getName());
                 serieTotal = e.getSerieTotal();
+
+                updateSerieCounter();
             }
         });
         exerciseViewModel.getExerciseById(idExercise).removeObservers(this);
@@ -330,10 +332,16 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
                 Log.d(TAG, "Setting series adapter!");
                 mAdapter.setSeries(series);
 
-                String counter = "SERIES: " + series.size() + "/" + serieTotal;
-                tvCounter.setText(counter);
+                updateSerieCounter();
             }
         });
+    }
+
+    private void updateSerieCounter(){
+        if(series != null){
+            String counter = "SERIES: " + series.size() + "/" + serieTotal;
+            tvCounter.setText(counter);
+        }
     }
 
     private boolean validate() {
@@ -444,12 +452,12 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
     }
 
     @Override
-    public void onItemDeleted() {
+    public void onItemDeleted(String s) {
         Log.d(TAG, "Item deleted!");
     }
 
     @Override
-    public void onItemAdded() {
+    public void onItemAdded(String s) {
         Log.d(TAG, "Item added!");
 
         ToastMessage.showMessage(this, "Série adicionada!");
@@ -461,7 +469,7 @@ public class ExecuteExerciseActivity extends AppCompatActivity implements Databa
     }
 
     @Override
-    public void onItemUpdated() {
+    public void onItemUpdated(String s) {
 
     }
 }

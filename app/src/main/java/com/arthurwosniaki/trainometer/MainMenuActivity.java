@@ -22,6 +22,7 @@ import com.arthurwosniaki.trainometer.adapters.MainMenuAdapter;
 import com.arthurwosniaki.trainometer.database.DatabaseCallback;
 import com.arthurwosniaki.trainometer.database.viewmodels.TrainingWithExecutionsViewModel;
 import com.arthurwosniaki.trainometer.utils.SendErrorReport;
+import com.arthurwosniaki.trainometer.utils.ToastMessage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,20 +62,12 @@ public class MainMenuActivity extends AppCompatActivity implements DatabaseCallb
         ActionBar actionBar = getSupportActionBar();
         (requireNonNull(actionBar)).setDisplayHomeAsUpEnabled(false);
 
+
         ButterKnife.bind(this);
 
         setupRecyclerView();
-
-        TrainingWithExecutionsViewModel trainingWithExecutionsViewModel =
-                ViewModelProviders.of(this).get(TrainingWithExecutionsViewModel.class);
-        trainingWithExecutionsViewModel.getOpenTrainingsWithExecutions(true).observe(this, trainings ->{
-            if(trainings!= null){
-                Log.d(TAG, "Trainings found: " + trainings.size());
-                mAdapter.setTrainings(trainings);
-            }
-        });
+        initializeData();
     }
-
 
     private void setupRecyclerView(){
         //Setting adapter
@@ -138,6 +131,18 @@ public class MainMenuActivity extends AppCompatActivity implements DatabaseCallb
         itemTouchHelper.attachToRecyclerView(rvMainMenu);
     }
 
+    private void initializeData(){
+        //Open Trainings observer
+        TrainingWithExecutionsViewModel trainingWithExecutionsViewModel =
+                ViewModelProviders.of(this).get(TrainingWithExecutionsViewModel.class);
+        trainingWithExecutionsViewModel.getOpenTrainingsWithExecutions(true).observe(this, trainings ->{
+            if(trainings!= null){
+                Log.d(TAG, "Trainings found: " + trainings.size());
+                mAdapter.setTrainings(trainings);
+            }
+        });
+    }
+
     //===================== TOOLBAR & UTILITIES===================================================//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,22 +173,24 @@ public class MainMenuActivity extends AppCompatActivity implements DatabaseCallb
 
     //INTERFACE CALLBACKS
     @Override
-    public void onItemDeleted() {
-        Log.d(TAG, "Item deleted!");
+    public void onItemDeleted(String s) {
+        Log.d(TAG, "Item Deleted");
     }
 
     @Override
-    public void onItemAdded() {
-        Log.d(TAG, "Item added!");
+    public void onItemAdded(String s) {
+        Log.d(TAG, "Item Added!");
+        ToastMessage.showMessage(this, getString(R.string.insert_success, s));
     }
 
     @Override
     public void onDataNotAvailable() {
-        Log.d(TAG, "Data not available!");
+        Log.d(TAG, "Data not Available");
+        ToastMessage.showMessage(this, getString(R.string.error));
     }
 
     @Override
-    public void onItemUpdated() {
-        Log.d(TAG, "Item updated!");
+    public void onItemUpdated(String s) {
+        Log.d(TAG, "Item Updated");
     }
 }

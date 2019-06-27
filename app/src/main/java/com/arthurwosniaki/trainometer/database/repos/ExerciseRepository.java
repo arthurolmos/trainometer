@@ -45,6 +45,10 @@ public class ExerciseRepository {
         new UpdateTask(mDao, mCallback).execute(exercise);
     }
 
+    public void delete(Exercise exercise){
+        new DeleteTask(mDao, mCallback).execute(exercise);
+    }
+
 
 
     //Tasks
@@ -68,7 +72,7 @@ public class ExerciseRepository {
             super.onPostExecute(aLong);
 
             if(aLong >= 0)
-                mCallBack.onItemAdded();
+                mCallBack.onItemAdded("Exercício");
             else
                 mCallBack.onDataNotAvailable();
         }
@@ -95,9 +99,36 @@ public class ExerciseRepository {
             super.onPostExecute(integer);
 
             if(integer >= 1)
-                mCallBack.onItemUpdated();
+                mCallBack.onItemUpdated("Exercício");
             else
-                mCallBack.onItemDeleted();
+                mCallBack.onDataNotAvailable();
+
+        }
+    }
+
+    private static class DeleteTask extends AsyncTask<Exercise, Void, Integer>{
+
+        private ExerciseDao mDao;
+        private DatabaseCallback mCallBack;
+
+        DeleteTask (ExerciseDao exerciseDao, DatabaseCallback callback){
+            mDao = exerciseDao;
+            mCallBack = callback;
+        }
+
+        @Override
+        protected Integer doInBackground(Exercise... exercises) {
+            return mDao.delete(exercises[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            if(integer >= 1)
+                mCallBack.onItemDeleted("Exercício");
+            else
+                mCallBack.onDataNotAvailable();
 
         }
     }

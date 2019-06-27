@@ -18,7 +18,7 @@ import static com.arthurwosniaki.trainometer.database.DatabaseConstants.TABLE_EX
                 parentColumns = "id",
                 childColumns = "id_training",
                 onDelete = ForeignKey.CASCADE))
-public class Exercise {
+public class Exercise implements Comparable<Exercise>{
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -58,6 +58,22 @@ public class Exercise {
         this.name = name;
         this.serieTotal = serieTotal;
         this.repsTotal = repsTotal;
+    }
+
+    @Ignore
+    public Exercise(String name, int serieTotal, String repsTotal, long idTraining) {
+        this.name = name;
+        this.serieTotal = serieTotal;
+        this.repsTotal = repsTotal;
+        this.idTraining = idTraining;
+    }
+
+    @Ignore
+    public Exercise(String name, int serieTotal, String repsTotal, int sequence) {
+        this.name = name;
+        this.serieTotal = serieTotal;
+        this.repsTotal = repsTotal;
+        this.sequence = sequence;
     }
 
     /* ============================ GETTER & SETTER ================================= */
@@ -148,5 +164,10 @@ public class Exercise {
 
     public void setLastModification(LocalDateTime lastModification) {
         this.lastModification = lastModification;
+    }
+
+    @Override
+    public int compareTo(Exercise otherExercise) {
+        return (this.getSequence() - otherExercise.getSequence());
     }
 }
