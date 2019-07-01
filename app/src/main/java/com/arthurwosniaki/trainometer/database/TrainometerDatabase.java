@@ -50,7 +50,6 @@ public abstract class TrainometerDatabase extends RoomDatabase {
     public abstract TrainingWithExecutionsDao trainingWithExecutionsDao();
     public abstract ExecutionWithTrainingDao executionWithTrainingDao();
     public abstract TrainingWithExercisesDao trainingWithExercises();
-//    public abstract TrainingFullDao trainingFullDao();
 
 
     private static volatile TrainometerDatabase INSTANCE;
