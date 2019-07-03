@@ -3,6 +3,7 @@ package com.arthurwosniaki.trainometer.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -63,6 +64,12 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
 
         //OnClick of View
         v.setOnClickListener(view -> {
+            //Mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+
             final int position = rvMainMenu.getChildAdapterPosition(view);
 
             TrainingWithExecutions t = trainings.get(position);

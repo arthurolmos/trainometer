@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -36,6 +37,8 @@ import static java.util.Objects.requireNonNull;
 public class MainMenuActivity extends AppCompatActivity implements DatabaseCallback {
     private String TAG = MainMenuActivity.class.getSimpleName();
 
+    private long mLastClickTime = 0;
+
     private MainMenuAdapter mAdapter;
 
     @BindView(R.id.rvMainMenu) RecyclerView rvMainMenu;
@@ -43,11 +46,23 @@ public class MainMenuActivity extends AppCompatActivity implements DatabaseCallb
 
 
     @OnClick(R.id.btnAddTraining) void openAddTraining(){
+        //Mis-clicking prevention, using threshold of 1000 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         Intent intent = new Intent(MainMenuActivity.this, AddTrainingActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.btnHistTraining) void openTrainingHistory(){
+        //Mis-clicking prevention, using threshold of 1000 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         Intent intent = new Intent(MainMenuActivity.this, HistoryTrainingActivity.class);
         startActivity(intent);
     }
