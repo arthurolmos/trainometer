@@ -66,9 +66,9 @@ public class HistoryTrainingAdapter extends RecyclerView.Adapter<HistoryTraining
             }
             mLastClickTime = SystemClock.elapsedRealtime();
 
-            int position = rvHistoryTraining.getChildAdapterPosition(view);
+//            int position = rvHistoryTraining.getChildAdapterPosition(view);
 
-            Training t = trainings.get(position);
+            Training t = trainings.get(i);
 
             Intent intent = new Intent(context, HistoryExerciseActivity.class);
             intent.putExtra("id_training", t.getId());intent.putExtra("name_training", t.getName());

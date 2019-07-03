@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.arthurwosniaki.trainometer.adapters.HistoryExerciseAdapter;
 import com.arthurwosniaki.trainometer.database.viewmodels.ExerciseWithSeriesViewModel;
 import com.arthurwosniaki.trainometer.database.DatabaseCallback;
+import com.arthurwosniaki.trainometer.database.viewmodels.TrainingViewModel;
+import com.arthurwosniaki.trainometer.entities.Training;
+import com.arthurwosniaki.trainometer.utils.Converters;
 import com.arthurwosniaki.trainometer.utils.SendErrorReport;
 import com.arthurwosniaki.trainometer.utils.ToastMessage;
 
@@ -58,6 +61,17 @@ public class HistoryExerciseActivity extends AppCompatActivity implements Databa
             Log.d(TAG, "Getting extras...");
 
             long idTraining = extras.getLong("id_training");
+
+            TrainingViewModel trainingViewModel =
+                    ViewModelProviders.of(this).get(TrainingViewModel.class);
+            trainingViewModel.getTrainingById(idTraining).observe(this, t->{
+                if(t != null){
+                    tvNameTraining.setText(t.getName());
+
+                    String date = Converters.localDateToString(t.getDateStart());
+                    tvDateInit.setText(date);
+                }
+            });
 
             ExerciseWithSeriesViewModel exerciseWithSeriesViewModel =
                     ViewModelProviders.of(this).get(ExerciseWithSeriesViewModel.class);
