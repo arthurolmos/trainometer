@@ -18,7 +18,7 @@ Screenshots:
 
 
 - Telas de Inclusão de Treino: <br><br>
-![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg) &nbsp &nbsp
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg)<p>
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111320_Trainometer.jpg)
 
 - Telas de Histórico: <br><br>
