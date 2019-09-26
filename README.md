@@ -13,12 +13,20 @@ Ainda está em desenvolvimento para a versão final.
 
 Screenshots:
 
-- Tela inicial: <br>
+- Tela inicial: <br><br>
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111228_Trainometer.jpg)
 
 
-- Telas de Inclusão de Treino: <br>
-![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg)
+- Telas de Inclusão de Treino: <br><br>
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg) &nbsp &nbsp
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111320_Trainometer.jpg)
+
+- Telas de Histórico: <br><br>
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111330_Trainometer.jpg) &nbsp &nbsp
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111336_Trainometer.jpg)
+
+
+- Tela de Execução de Treino: <br><br>
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111351_Trainometer.jpg)
 
 
