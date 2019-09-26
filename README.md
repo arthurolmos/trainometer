@@ -18,15 +18,18 @@ Screenshots:
 
 
 - Telas de Inclusão de Treino: <br><br>
-![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg) &emsp;
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg) &emsp; &emsp;
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111320_Trainometer.jpg)
 
 - Telas de Histórico: <br><br>
-![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111330_Trainometer.jpg) &nbsp &nbsp
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111330_Trainometer.jpg) &emsp; &emsp;
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111336_Trainometer.jpg)
 
 
 - Tela de Execução de Treino: <br><br>
-![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111351_Trainometer.jpg)
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111351_Trainometer.jpg) &emsp; &emsp;
+
+- Tela de Execução de Exercício: <br><br>
+![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111409_Trainometer.jpg)
 
 
