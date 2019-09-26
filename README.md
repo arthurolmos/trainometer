@@ -13,11 +13,11 @@ Ainda está em desenvolvimento para a versão final.
 
 Screenshots:
 
-- Tela inicial:
+- Tela inicial: <br>
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111228_Trainometer.jpg)
 
 
-- Telas de Inclusão de Treino:
+- Telas de Inclusão de Treino: <br>
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111256_Trainometer.jpg)
 ![alt text](https://github.com/arthurolmos/trainometer/blob/master/screenshots/Screenshot_20190926-111320_Trainometer.jpg)
 
