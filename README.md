@@ -8,8 +8,6 @@ Inclua o treino, os exercícios, e controle os pesos e repetições realizadas p
 
 Inclui um timer e um cronômetro.
 
-Ainda está em desenvolvimento para a versão final.
-
 
 Screenshots:
 
