@@ -8,8 +8,9 @@ Inclua o treino, os exercícios, e controle os pesos e repetições realizadas p
 
 Inclui um timer e um cronômetro que rodam em background (e mesmo se fechar o app) e notifica quando o tempo termina.
 
-Tecnologias utilizadas:
-&emsp; -Java (Android Native)
+Tecnologias utilizadas:<br>
+&emsp; -Java (Android Native), SQLite, RoomSQL<br>
+&emsp; -Background Service, Notification 
 
 *Disponibilizei o aplicativo para teste de quem interessar, mas ainda não está na versão final.
 
